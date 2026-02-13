@@ -1,6 +1,7 @@
 import { leerPDF } from "./src/leerPDF.js";
 import { analizarTexto } from "./src/analizadorLexico.js";
 
+
 const inputPDF = document.getElementById("pdfInput");
 const resultadoDiv = document.getElementById("resultado");
 

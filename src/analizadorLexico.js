@@ -4,7 +4,12 @@ function escaparRegex(texto) {
   return texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-export function analizarTexto(paginas) {
+export function analizarTexto(textoOPaginas) {
+  // Handle both string and array formats
+  const paginas = typeof textoOPaginas === 'string' 
+    ? [{ pagina: 1, texto: textoOPaginas }]
+    : textoOPaginas;
+
   return paginas.map(p => {
     let texto = p.texto;
 
