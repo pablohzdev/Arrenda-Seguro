@@ -5,25 +5,48 @@ function escaparRegex(texto) {
 }
 
 export function analizarTexto(textoOPaginas) {
-  // Handle both string and array formats
-  const paginas = typeof textoOPaginas === 'string' 
+
+  const paginas = typeof textoOPaginas === 'string'
     ? [{ pagina: 1, texto: textoOPaginas }]
     : textoOPaginas;
 
   return paginas.map(p => {
-    let texto = p.texto;
+
+    let textoOriginal = p.texto;
+    let textoMarcado = textoOriginal;
+    let detecciones = [];
 
     for (const tipo in TOKENS) {
+
       TOKENS[tipo].forEach(token => {
+
         const tokenEscapado = escaparRegex(token);
         const regex = new RegExp(`\\b${tokenEscapado}\\b`, "gi");
-        texto = texto.replace(regex, `<mark>$&</mark>`);
+
+        let match;
+
+        while ((match = regex.exec(textoOriginal)) !== null) {
+
+          const inicio = Math.max(0, match.index - 80);
+          const fin = Math.min(textoOriginal.length, match.index + match[0].length + 80);
+
+          const fragmento = textoOriginal.substring(inicio, fin);
+
+          detecciones.push({
+            tipo,
+            palabra: match[0],
+            fragmento
+          });
+        }
+
+        textoMarcado = textoMarcado.replace(regex, `<mark>$&</mark>`);
       });
     }
 
     return {
       pagina: p.pagina,
-      texto
+      texto: textoMarcado,
+      detecciones
     };
   });
 }
