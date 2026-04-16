@@ -17,6 +17,43 @@ export function analizarIncongruencias(paginas) {
     }
 
     // ===============================
+    // CONTRADICCIONES
+    // ===============================
+
+    const contradicciones = [
+      ["podrá", "no podrá"],
+      ["será responsable", "no será responsable"],
+      ["se permiten", "no se permiten"],
+      ["podrá subarrendar", "no podrá subarrendar"],
+      ["con penalización", "sin penalización"]
+    ];
+
+    contradicciones.forEach(par => {
+
+      const frases1 = buscarOraciones(par[0]);
+      const frases2 = buscarOraciones(par[1]);
+
+      if (frases1.length > 0 && frases2.length > 0) {
+
+        const combinacion = frases1[0] + frases2[0];
+
+        if (!frasesDetectadas.has(combinacion)) {
+
+          frasesDetectadas.add(combinacion);
+
+          incongruencias.push({
+            tipo: "CONTRADICCIÓN",
+            frase: `${frases1[0]} ... ${frases2[0]}`,
+            pagina: numeroPagina
+          });
+
+        }
+
+      }
+
+    });
+
+    // ===============================
     // AMBIGUEDADES
     // ===============================
 
