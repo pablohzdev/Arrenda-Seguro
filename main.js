@@ -10,6 +10,15 @@ inputPDF.addEventListener("change", async (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
+  const uploadBox = document.getElementById("uploadBox");
+
+  if(uploadBox){
+    uploadBox.innerHTML = `
+      <h2>⏳ Analizando contrato...</h2>
+      <p>Procesando archivo...</p>
+    `;
+  }
+
   resultadoDiv.innerHTML = "⏳ Analizando contrato...";
 
   try {
@@ -26,7 +35,7 @@ inputPDF.addEventListener("change", async (e) => {
     resultadoDiv.innerHTML = "";
 
     // ===============================
-    // INCONGRUENCIAS COMO DETECCIONES
+    // INCONGRUENCIAS
     // ===============================
 
     if (incongruencias.length > 0) {
@@ -103,6 +112,60 @@ inputPDF.addEventListener("change", async (e) => {
       resultadoDiv.appendChild(div);
 
     });
+
+
+    // ===============================
+    // ARCHIVO ANALIZADO (VERDE)
+    // ===============================
+
+    if(uploadBox){
+
+      uploadBox.innerHTML = `
+      
+        <div style="
+          padding:30px;
+          border:2px dashed #22c55e;
+          border-radius:12px;
+          background:#f0fdf4;
+          text-align:center;
+        ">
+
+          <div style="
+            width:60px;
+            height:60px;
+            background:#22c55e;
+            border-radius:50%;
+            margin:0 auto 15px auto;
+          "></div>
+
+          <h2 style="color:#16a34a;">
+            ✅ Archivo analizado correctamente
+          </h2>
+
+          <p style="color:#4b5563;">
+            Puedes cargar otro contrato si lo deseas
+          </p>
+
+          <button 
+            onclick="document.getElementById('pdfInput').click()"
+            style="
+              margin-top:15px;
+              background:#22c55e;
+              color:white;
+              padding:12px 25px;
+              border:none;
+              border-radius:8px;
+              cursor:pointer;
+              font-weight:bold;
+            "
+          >
+            Cargar otro archivo
+          </button>
+
+        </div>
+
+      `;
+    }
 
   } catch (error) {
 
