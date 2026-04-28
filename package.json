@@ -12,7 +12,11 @@
     "vite": "^7.2.4"
   },
   "dependencies": {
+    "@huggingface/inference": "^4.13.15",
     "@tailwindcss/vite": "^4.1.18",
-    "tailwindcss": "^4.1.18"
+    "jspdf": "^4.1.0",
+    "pdfjs-dist": "^3.11.174",
+    "tailwindcss": "^4.1.18",
+    "tesseract.js": "^7.0.0"
   }
 }

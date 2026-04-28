@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+/* AQUÍ CONFIGURAS TU TEMA (Reemplaza al script de JS que borraste) */
+@theme {
+  /* Definimos tus colores personalizados */
+  --color-primary: #135bec;
+  --color-background-light: #f6f6f8;
+  --color-background-dark: #101622;
+
+  /* Definimos tu fuente personalizada */
+  --font-display: "Inter", sans-serif;
+}
+
+/* TUS ESTILOS NORMALES */
+body {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.glass-panel {
+    background: rgba(19, 91, 236, 0.05);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(19, 91, 236, 0.1);
+}
+
+.upload-dash {
+    /* ... tu código del borde ... */
+}
+/* style.css */
+body {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.glass-panel {
+    background: rgba(19, 91, 236, 0.05);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(19, 91, 236, 0.1);
+}
+
+.upload-dash {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23135becFF' stroke-width='2' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    border-radius: 0.75rem;
+}
