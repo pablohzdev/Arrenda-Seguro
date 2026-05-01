@@ -10,6 +10,27 @@ inputPDF.addEventListener("change", async (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
+  // ===============================
+// VALIDAR QUE SEA PDF
+// ===============================
+
+if (file.type !== "application/pdf") {
+
+  resultadoDiv.innerHTML = `
+    <div style="
+      padding:15px;
+      background:#fee2e2;
+      border-left:4px solid #ef4444;
+      border-radius:8px;
+    ">
+      ❌ Tipo de archivo incorrecto <br><br>
+      Por favor, selecciona un archivo en formato <strong>.PDF</strong>
+    </div>
+  `;
+
+  return;
+}
+
   resultadoDiv.innerHTML = "⏳ Analizando contrato...";
 
   try {
