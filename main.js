@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="col-span-full glass-card rounded-2xl p-lg flex flex-col items-center text-center gap-md border-t-4 border-t-green-500">
                         <span class="material-symbols-outlined text-green-500 text-5xl" style="font-variation-settings: 'FILL' 1">check_circle</span>
                         <h4 class="font-body-md font-bold text-white">¡Todo parece en orden!</h4>
-                        <p class="text-slate-400 text-body-sm max-w-md">No hemos detectado incongruencias severas ni léxico abusivo en este contrato. Aún así, te recomendamos leerlo detenidamente.</p>
+                        <p class="text-slate-400 text-body-sm">No hemos detectado incongruencias severas ni léxico abusivo en este contrato. Aún así, te recomendamos leerlo detenidamente.</p>
                     </div>
                 `;
             }
