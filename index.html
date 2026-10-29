@@ -2,7 +2,6 @@
 <html lang="es">
 
 <head>
-    <link rel="icon" href="/mi-logo.png" />
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Arrenda-Seguro | Análisis de Contratos</title>
@@ -11,7 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/style.css" />
-
+    <link rel="icon" href="./public/mi-logo.png"/>
+    
     <script>
         // Revisa si hay un tema guardado, o si el sistema prefiere modo oscuro
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -52,6 +52,19 @@
                 en tus contratos de alquiler.
             </p>
 
+            <div class="mb-lg flex flex-wrap items-center justify-center gap-sm">
+                <span class="material-symbols-outlined text-slate-400 text-[20px]">public</span>
+                <label for="country-select" class="text-body-sm text-slate-600 dark:text-on-surface-variant">Ley aplicable:</label>
+                <select id="country-select"
+                    class="rounded-full border border-slate-300 dark:border-outline-variant bg-white dark:bg-surface-container text-slate-900 dark:text-white pl-4 pr-10 py-2 text-body-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="AUTO" selected>Detectar automáticamente</option>
+                    <option value="ES">España</option>
+                    <option value="MX">México (CDMX)</option>
+                    <option value="CO">Colombia</option>
+                    <option value="US-CA">Estados Unidos (California)</option>
+                </select>
+            </div>
+
             <div
                 class="group relative p-unit rounded-2xl bg-gradient-to-br from-indigo-500/10 dark:from-indigo-500/20 to-transparent">
                 <div id="dropzone"
@@ -74,7 +87,7 @@
                             class="mt-md bg-indigo-100 dark:bg-secondary-container text-indigo-700 dark:text-secondary px-lg py-3 rounded-xl font-semibold hover:bg-indigo-200 dark:hover:bg-secondary-container/80 transition-colors">
                             Explorar Archivos
                         </button>
-                        <input type="file" id="file-input" class="hidden" accept=".pdf,.docx,application/pdf" />
+                        <input type="file" id="file-input" class="hidden" accept=".pdf,application/pdf" />
                     </div>
                 </div>
             </div>
@@ -109,46 +122,51 @@
         </div>
 
         <!-- Results Section (Dashboard Mockup) -->
-        <section id="results-section" class="hidden max-w-7xl mx-auto px-margin py-xl">
+        <section id="results-section" class="hidden max-w-7xl mx-auto px-md md:px-margin py-xl">
 
-            <div class="flex flex-col md:flex-row items-end justify-between mb-xl gap-md">
-                <div class="space-y-xs">
-                    <div class="flex items-center gap-sm">
-                        <span class="text-slate-500 text-body-sm">•</span>
-                        <span class="text-slate-500 text-body-sm">Análisis completado recién</span>
-                    </div>
-                    <h2 class="font-h2 text-h2 text-slate-900 dark:text-white transition-colors">
-                        Resumen de Auditoría de Contrato
+            <!-- Encabezado del informe -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-lg">
+                <div class="min-w-0">
+                    <p class="font-label-caps text-label-caps uppercase text-indigo-600 dark:text-primary mb-sm">Informe de auditoría</p>
+                    <h2 id="report-title" class="font-h2 text-h2 text-slate-900 dark:text-white transition-colors break-words">
+                        Contrato analizado
                     </h2>
+                    <div id="meta-chips" class="flex flex-wrap gap-sm mt-md"></div>
                 </div>
-                <div class="flex gap-sm">
-                    <button onClick="window.location.reload()"
-                        class="flex items-center gap-sm px-md py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors text-white text-body-sm font-semibold">
-                        <span class="material-symbols-outlined text-sm">refresh</span>
-                        Analizar Otro
-                    </button>
-                </div>
+                <button onClick="window.location.reload()"
+                    class="shrink-0 self-start md:self-auto flex items-center gap-sm px-md py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors text-white text-body-sm font-semibold">
+                    <span class="material-symbols-outlined text-[18px]">upload_file</span>
+                    Analizar otro
+                </button>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
-                <div class="lg:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-lg">
-                    <!-- Las tarjetas se inyectarán aquí desde JS -->
-                </div>
-            </div>
+            <!-- Avisos (idioma / país) -->
+            <div id="avisos" class="flex flex-col gap-sm mb-lg empty:hidden"></div>
 
-            <!-- Contenedor del Documento Completo Analizado -->
-            <div id="document-view" class="mt-xl glass-card rounded-2xl p-lg md:p-2xl hidden">
-                <div class="flex items-center gap-sm mb-md border-b border-slate-200 dark:border-slate-700 pb-4">
-                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400">description</span>
-                    <h3 class="font-h3 text-h3 text-slate-900 dark:text-white transition-colors">
-                        Documento Analizado
-                    </h3>
-                </div>
+            <!-- Veredicto y conteos -->
+            <div id="resumen" class="grid grid-cols-2 lg:grid-cols-4 gap-md mb-xl"></div>
 
-                <!-- Aquí inyectaremos el texto con los subrayados -->
-                <div id="full-text-container"
-                    class="text-slate-700 dark:text-slate-300 font-body-sm leading-relaxed max-h-[600px] overflow-y-auto pr-4 transition-colors">
-                </div>
+            <!-- Hallazgos + documento -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+                <div id="hallazgos" class="lg:col-span-5 flex flex-col gap-xl min-w-0"></div>
+
+                <aside id="document-view"
+                    class="lg:col-span-7 glass-card rounded-2xl overflow-hidden flex flex-col lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)]">
+                    <div class="flex flex-wrap items-center justify-between gap-sm px-lg py-md border-b border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center gap-sm">
+                            <span class="material-symbols-outlined text-indigo-600 dark:text-primary">description</span>
+                            <h3 class="font-body-md font-semibold text-slate-900 dark:text-white">Documento</h3>
+                        </div>
+                        <div class="flex items-center gap-md text-xs text-slate-500 dark:text-slate-400">
+                            <span class="flex items-center gap-xs"><span class="w-3 h-3 rounded-sm bg-rose-300 dark:bg-rose-500/50"></span>Alto</span>
+                            <span class="flex items-center gap-xs"><span class="w-3 h-3 rounded-sm bg-amber-200 dark:bg-amber-500/40"></span>Medio</span>
+                            <span class="flex items-center gap-xs"><span class="w-3 h-3 rounded-sm bg-sky-200 dark:bg-sky-500/40"></span>Revisar</span>
+                        </div>
+                    </div>
+                    <div id="full-text-container"
+                        class="px-lg py-md overflow-y-auto max-h-[70vh] lg:max-h-none text-slate-700 dark:text-slate-300 text-body-sm leading-7 transition-colors">
+                    </div>
+                </aside>
             </div>
         </section>
 
