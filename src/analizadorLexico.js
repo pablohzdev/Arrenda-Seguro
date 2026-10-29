@@ -1,52 +1,49 @@
-import { TOKENS } from "./tokens.js";
+import { IDIOMAS } from "./idiomas.js";
+import { construirArbol, dividirOraciones, evaluarArbol } from "./arbolExpresiones.js";
 
-function escaparRegex(texto) {
-  return texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
+const FRAGMENTO_MAX = 240;
 
-export function analizarTexto(textoOPaginas) {
+// Por página devuelve:
+//  - detecciones: términos sensibles (obligaciones, penalizaciones) activos;
+//  - contexto: términos informativos (pagos, fechas), que no son alertas;
+//  - descartes: términos sensibles anulados por negación o mitigador.
+// Cada término lleva `posicion` (índice en el texto de la página).
+export function analizarTexto(textoOPaginas, idiomaId = "es") {
 
+  const idioma = IDIOMAS[idiomaId];
   const paginas = typeof textoOPaginas === 'string'
     ? [{ pagina: 1, texto: textoOPaginas }]
     : textoOPaginas;
 
   return paginas.map(p => {
 
-    let textoOriginal = p.texto;
-    let textoMarcado = textoOriginal;
-    let detecciones = [];
+    const detecciones = [];
+    const contexto = [];
+    const descartes = [];
 
-    for (const tipo in TOKENS) {
+    dividirOraciones(p.texto).forEach(oracion => {
+      const arbol = construirArbol(oracion, idioma);
+      const fragmento = oracion.texto.trim().slice(0, FRAGMENTO_MAX);
 
-      TOKENS[tipo].forEach(token => {
-
-        const tokenEscapado = escaparRegex(token);
-        const regex = new RegExp(`\\b${tokenEscapado}\\b`, "gi");
-
-        let match;
-
-        while ((match = regex.exec(textoOriginal)) !== null) {
-
-          const inicio = Math.max(0, match.index - 80);
-          const fin = Math.min(textoOriginal.length, match.index + match[0].length + 80);
-
-          const fragmento = textoOriginal.substring(inicio, fin);
-
-          detecciones.push({
-            tipo,
-            palabra: match[0],
-            fragmento
-          });
+      evaluarArbol(arbol, idioma).forEach(r => {
+        const item = { tipo: r.tipo, palabra: r.palabra, posicion: r.posicion, fragmento };
+        if (!idioma.sensibles.includes(r.tipo)) {
+          contexto.push(item);
+        } else if (r.estado === "ACTIVO") {
+          detecciones.push(item);
+        } else {
+          descartes.push({ ...item, estado: r.estado, motivo: r.motivo });
         }
-
-        textoMarcado = textoMarcado.replace(regex, `<mark>$&</mark>`);
       });
-    }
+    });
 
     return {
       pagina: p.pagina,
-      texto: textoMarcado,
-      detecciones
+      texto: p.texto,
+      detecciones,
+      contexto,
+      descartes,
+      descartadas: descartes.length
     };
   });
 }

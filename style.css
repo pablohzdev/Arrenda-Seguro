@@ -18,6 +18,12 @@
     @apply bg-white/80 dark:bg-[#171f33]/60 backdrop-blur-[20px] border border-slate-200 dark:border-[#464554]/40 shadow-sm transition-colors duration-500;
   }
 
+  /* Marca del documento enfocada al pulsar un hallazgo */
+  .marca-activa {
+    @apply ring-2 ring-indigo-500 ring-offset-2 ring-offset-white dark:ring-offset-slate-900;
+    animation: pulso-marca 1.4s ease-out;
+  }
+
   .dropzone-pattern {
     /* Hacemos que los puntitos del fondo sean un poco más visibles */
     background-image: radial-gradient(
@@ -27,6 +33,15 @@
     );
     background-size: 24px 24px;
   }
+}
+
+@keyframes pulso-marca {
+  0%, 30% { filter: brightness(0.85) saturate(1.6); }
+  100% { filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marca-activa { animation: none; }
 }
 
 .material-symbols-outlined {

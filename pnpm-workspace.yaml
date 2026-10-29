@@ -1,0 +1,5 @@
+allowBuilds:
+  canvas: false
+  core-js: true
+  esbuild: true
+  tesseract.js: true

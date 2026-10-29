@@ -8,13 +8,13 @@ La interfaz visual consumirá la API que acabamos de levantar.
 **`. Instalar dependencias de Node:**
 
 ```bash
-npm install
+pnpm install
 ```
 
 **1. Ejecutar entorno de desarrollo:**
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 > El navegador abrirá la aplicación en: `http://localhost:5173`
